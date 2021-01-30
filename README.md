@@ -1,4 +1,4 @@
-# ModelCoder
+# JSONModel
 
 
 ## Usage
