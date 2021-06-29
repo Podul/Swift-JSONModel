@@ -13,8 +13,8 @@ import Foundation
 
 
 @propertyWrapper
-final class JSONField<Wrapper>: BaseFiled<Wrapper> where Wrapper: Codable {
-    override var wrappedValue: Wrapper {
+final public class JSON<Wrapper>: BaseFiled<Wrapper> where Wrapper: Codable {
+    public override var wrappedValue: Wrapper {
         get { super.wrappedValue }
         set { super.wrappedValue = newValue }
     }

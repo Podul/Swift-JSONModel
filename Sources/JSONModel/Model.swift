@@ -11,8 +11,29 @@
 
 import Foundation
 
-public protocol JSONModel: Codable {
+public protocol JSONModel: Codable, CustomStringConvertible {
     init()
+    
+    static var decoder: JSONDecoder { get }
+    static var encoder: JSONEncoder { get }
+}
+
+extension JSONModel {
+    public static var decoder: JSONDecoder { .init() }
+    public static var encoder: JSONEncoder { .init() }
+}
+
+extension JSONModel {
+    public var description: String {
+        children().reduce(into: [String: Any](), {
+            if let value = $1.value.value as? OptionalType {
+                $0[$1.value.key] = value
+            }else {
+                $0[$1.value.key] = $1.value.value
+            }
+        })
+        .description
+    }
 }
 
 
@@ -36,6 +57,7 @@ extension JSONModel {
             return (label, value)
         }
         
+        // 添加父类
         var superclassMirror = mirror.superclassMirror
         while true {
             guard let childMirror = superclassMirror else { break }
@@ -46,7 +68,6 @@ extension JSONModel {
             }
             superclassMirror = childMirror.superclassMirror
         }
-        
         return arr
     }
 }
